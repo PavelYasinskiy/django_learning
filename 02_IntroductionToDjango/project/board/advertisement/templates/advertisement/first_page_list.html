@@ -1,0 +1,19 @@
+<html>
+<ul>
+    <li>
+        <a href="http://127.0.0.1:8000">На главную</a>
+    </li>
+    <li>
+        {% for b in data %}
+        <a href="{{ b.title.url }}">{{ b.title }}</a>
+        <img src="{{ b.cover.url }}">
+        {% endfor %}
+    </li>
+    <li>
+        дела
+    </li>
+    <li>
+        твои
+    </li>
+</ul>
+</html>
