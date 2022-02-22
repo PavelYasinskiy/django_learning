@@ -1,13 +1,23 @@
 from django.shortcuts import render
-from .models import Board
-from django.views.generic import ListView
+
+
 
 def advertisement_list(request,*args,**kwargs):
     return render(request, 'advertisement/advertisement_list.html', {})
 
 def first_page_list(request,*args,**kwargs):
-    data = Board.objects.all()
-    return render(request, 'advertisement/first_page_list.html', {'data': data})
+    return render(request, 'advertisement/first_page_list.html', {})
 
-# data = Book.objects.all()
-#     return render(request, 'home_page.html', {'data': data})
+def second_page_list(request,*args,**kwargs):
+    return render(request, 'advertisement/second_page_list.html', {})
+
+def third_page_list(request,*args,**kwargs):
+    return render(request, 'advertisement/third_page_list.html', {})
+
+def fourth_page_list(request,*args,**kwargs):
+    return render(request, 'advertisement/fourth_page_list.html', {})
+
+def fifth_page_list(request,*args,**kwargs):
+    return render(request, 'advertisement/fifth_page_list.html', {})
+
+
