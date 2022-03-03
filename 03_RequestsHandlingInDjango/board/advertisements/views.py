@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
 
+
 def advertisement_list(request, *args, **kwargs):
     advertisements = [
         'Мастер на час',
@@ -43,6 +44,7 @@ def categories_lst(request, *args, **kwargs):
     categories = ["личные вещи", 'транспорт', 'хобби и отдых']
     return render(request, 'advertisements/categories_list.html', {'categories': categories})
 
+
 class Regions(View):
     def get(self, request):
         reg = ["Москва", 'Московская область', "республика Алтай", 'Вологодская область']
@@ -53,9 +55,16 @@ class Regions(View):
         return render(request, 'advertisements/region.html', {'reg': reg})
 
 
+def post_count(request):
+    if request.session.get('post_count', 0) == 0:
+        request.session['post_count'] = 0
+    request.session['post_count'] += 1
+    return request.session.get('post_count')
+
+
 class Advertisements(View):
     get_count = [0]
-    post_count = [0]
+
     def get(self, request):
         advert = [
             'Мастер на час',
@@ -70,13 +79,13 @@ class Advertisements(View):
         ]
         self.get_count[0] += 1
         return render(request, 'advertisements/advertisements_cbv.html', {'advert': advert,
-                                                                          'count': self.get_count})
+                                                                          'get_count': self.get_count})
 
     def post(self, request):
         advert = ["Запрос на создание новой записи успешно выполнен."]
-        self.post_count[0] += 1
-        return render(request, 'advertisements/region.html', {'advert': advert,
-                                                              'count': self.post_count})
+        count = post_count(request)
+        return render(request, 'advertisements/advertisements_cbv.html', {'advert': advert,
+                                                                          'count': count})
 
 
 class Contacts(TemplateView):
@@ -99,6 +108,7 @@ class About(TemplateView):
         context["description"] = 'Бесплатные объявления в вашем городе!'
         context["title"] = "Бесплатные объявления"
         return context
+
 
 class MainMenu(View):
 

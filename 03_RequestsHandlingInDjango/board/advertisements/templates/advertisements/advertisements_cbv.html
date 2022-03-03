@@ -3,9 +3,14 @@
     {% for advertisement in advert %}
     <li>{{ advertisement }}</li>
     {% endfor %}
-    {% for num in count %}
+    {% for num in get_count %}
     <li>Запросов было: {{ num }}</li>
     {% endfor %}
-
+    <li>POST Запросов было: {{ count }}</li>
 </ul>
+    <form action="." method="post">{% csrf_token %}
+    <label for="your_name">Your name: </label>
+    <input id="your_name" type="text" name="your_name" value="Who are you?">
+    <input type="submit" value="OK">
+</form>
 </html>
