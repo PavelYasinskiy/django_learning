@@ -1,7 +1,18 @@
 <html>
 <ul>
-    <li>Мастер на час</li>
-    <li>Выведение из запоя</li>
-    <li>Услуги экскаватора-погрузчика, гидромолота, ямобура</li>
+    <h1>Объявления</h1>
+    {% for advertisement in advertisement_list %}
+    <li>
+        <a href="{{ advertisement.id }}">{{ advertisement.title }} | {{ advertisement.price }}
+            | {{ advertisement.heading }}</a>
+    </li>
+    {% endfor %}
+<!--    <h1>Поиск</h1>-->
+<!--    <form>-->
+<!--    <input type="text" placeholder="Искать здесь...">-->
+<!--    <button type="submit"></button>-->
+<!--    </form>-->
 </ul>
 </html>
+
+Заголовок | Цена | Наименование рубрики
