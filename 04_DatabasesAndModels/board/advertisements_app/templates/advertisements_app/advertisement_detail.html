@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.title }}</title>
+
+</head>
+<body>
+<h1>{{ object.title }} </h1>
+<p>Цена: {{ object.price }}руб. | {% widthratio object.price 114 1 %}$ </p>
+<p>Описание: {{ object.description }}</p>
+<p>Рубрика: {{ object.heading }}</p>
+<p>Тип объявления: {{ object.type }}</p>
+<p>Автор: {{ object.author }}</p>
+<p>Электронная почта: {{ object.author.email }}</p>
+<p>Телефон: {{ object.author.phone }}</p>
+<p>Количество просмотров: {{ object.views_count }}</p>
+</body>
+</html>
