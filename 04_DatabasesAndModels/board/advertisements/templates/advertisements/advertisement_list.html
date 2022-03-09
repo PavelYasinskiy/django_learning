@@ -1,0 +1,11 @@
+<html>
+<ul>
+    <h1>Объявления</h1>
+    {% for advertisement in advertisement_list %}
+    <li>
+        <a href="{{ advertisement.id }}">{{ advertisement.title }} | {{ advertisement.price }}
+            | {{ advertisement.heading }}</a>
+    </li>
+    {% endfor %}
+</ul>
+</html>
