@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
+from advertisements.models import Advertisement
 
 class AdvertisementListView(ListView):
     model = Advertisement
