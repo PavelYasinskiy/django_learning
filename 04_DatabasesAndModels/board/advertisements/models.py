@@ -14,15 +14,15 @@ class Advertisement(models.Model):
                                      verbose_name='Дата окончания публикации')
     price = models.FloatField(verbose_name='цена', default=0)
     views_count = models.IntegerField(verbose_name='количество просмотров', default=0)
-    status = models.ForeignKey('AdvertisementStatus', default=None, null=True, on_delete=models.CASCADE,
+    status = models.ForeignKey('AdvertisementStatus', on_delete=models.CASCADE,
                                related_name='advertisements', verbose_name="статус")
-    author = models.ForeignKey('AuthorContact', default=None, null=True, on_delete=models.CASCADE,
+    author = models.ForeignKey('AuthorContact', on_delete=models.CASCADE,
                                related_name='advauthor', verbose_name="Автор")
     region = models.ManyToManyField('AdvertisementRegion',
                                     related_name='advregion')
-    type = models.ForeignKey('AdvertisementType', default=None, null=True, on_delete=models.CASCADE,
+    type = models.ForeignKey('AdvertisementType', on_delete=models.CASCADE,
                              related_name='advtype')
-    heading = models.ForeignKey('AdvertisementHeading', default=None, null=True, on_delete=models.CASCADE,
+    heading = models.ForeignKey('AdvertisementHeading', on_delete=models.CASCADE,
                                 related_name='advheading')
 
     def __str__(self):
