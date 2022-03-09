@@ -1,5 +1,5 @@
 from django.contrib import admin
-from advertisements.models import Advertisement, AuthorContact, AdvertisementStatus, AdvertisementRegion, \
+from advertisements_app.models import Advertisement, AuthorContact, AdvertisementStatus, AdvertisementRegion, \
     AdvertisementType, AdvertisementHeading
 
 # Register your models here.
