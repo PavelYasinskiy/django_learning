@@ -17,13 +17,13 @@ class Advertisement(models.Model):
     status = models.ForeignKey('AdvertisementStatus', on_delete=models.CASCADE,
                                related_name='advertisements', verbose_name="статус")
     author = models.ForeignKey('AuthorContact', on_delete=models.CASCADE,
-                               related_name='advauthor', verbose_name="Автор")
+                               related_name='advertisments', verbose_name="Автор")
     region = models.ManyToManyField('AdvertisementRegion',
                                     related_name='advregion')
     type = models.ForeignKey('AdvertisementType', on_delete=models.CASCADE,
-                             related_name='advtype')
+                             related_name='advertisments')
     heading = models.ForeignKey('AdvertisementHeading', on_delete=models.CASCADE,
-                                related_name='advheading')
+                                related_name='advertisments')
 
     def __str__(self):
         return self.title
