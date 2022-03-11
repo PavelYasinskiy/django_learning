@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая новость</title>
+</head>
+<body>
+  <h2>Добавить новость</h2>
+  <form method="post" action="/news/addnews/">
+    {% csrf_token %}
+    {{ news_form.as_ul }}
+    <button type="submit">Проинформировать</button>
+  </form>
+  <p></p>
+  <a href="{% url 'news' %}">НА ГЛАВНУЮ</a>
+
+</body>
+</html>

@@ -1,2 +1,47 @@
 from django.db import models
+from django.utils import timezone
+import datetime
+
+# class User(models.Model):
+#     username = models.CharField(max_length=30)
+#     password = models.CharField(max_length=30)
+#     first_name = models.CharField(max_length=30)
+#     second_name = models.CharField(max_length=30)
+#     last_name = models.CharField(max_length=30)
+#     email = models.EmailField()
+#     birthday = models.DateField()
+
+class News(models.Model):
+    title = models.CharField( max_length=300, verbose_name="Название")
+    description = models.CharField(max_length=1500, verbose_name="Описание")
+    public_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
+    edit_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    active_flag = models.BooleanField(verbose_name='Активность')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        db_table = 'news'
+        ordering = ['public_date']
+
+
+class Comments(models.Model):
+    username = models.CharField(max_length=25, verbose_name="Имя")
+    what = models.CharField(max_length=1500, verbose_name="Ваш комментарий")
+    news = models.ForeignKey('News', on_delete=models.CASCADE,
+                               related_name='news', verbose_name="Новость")
+
+
+# Создайте новостной сайт. Он должен уметь отображать новости и поддерживать возможность их комментировать.
+# Создайте модель Новость с полями:
+# название, содержание, дата создания, дата редактирования, флаг активности.
+# Создайте модель Комментарий с полями:
+# имя пользователя, текст комментария, новость (связь с моделью новость).
+
+# Создайте странички:
+# список всех новостей (новости отсортированы по дате создания),
+# страничку создания новости,
+# страничку редактирования новости,
+# детальная страница новости+комментарии к ней (с возможностью добавить новый комментарий).
 

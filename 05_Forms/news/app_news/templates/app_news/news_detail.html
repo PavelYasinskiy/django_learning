@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.title }}</title>
+</head>
+<body>
+    <h1>{{ object.title }}</h1>
+        <p>{{ object.description }}</p>
+        <p>{{ object.public_date }}</p>
+    {% for comment in object.all.news.all %}
+        <p>Кто{{ comment.username }}</p>
+        <p>Что{{ comment.what }}</p>
+    {% endfor %}
+        <form method="post" action="./">
+            {% csrf_token %}
+            {{ form.as_ul }}
+            <button type="submit">Добавить коммент</button>
+        </form>
+    <a href="{% url 'news' %}">НА ГЛАВНУЮ</a>
+
+</body>
+</html>
