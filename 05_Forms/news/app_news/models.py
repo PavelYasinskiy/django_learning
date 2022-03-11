@@ -1,15 +1,5 @@
 from django.db import models
-from django.utils import timezone
-import datetime
 
-# class User(models.Model):
-#     username = models.CharField(max_length=30)
-#     password = models.CharField(max_length=30)
-#     first_name = models.CharField(max_length=30)
-#     second_name = models.CharField(max_length=30)
-#     last_name = models.CharField(max_length=30)
-#     email = models.EmailField()
-#     birthday = models.DateField()
 
 class News(models.Model):
     title = models.CharField( max_length=300, verbose_name="Название")
@@ -28,7 +18,7 @@ class News(models.Model):
 
 class Comments(models.Model):
     username = models.CharField(max_length=25, verbose_name="Имя")
-    what = models.CharField(max_length=1500, verbose_name="Ваш комментарий")
+    text_comment = models.CharField(max_length=1500, verbose_name="Ваш комментарий")
     news = models.ForeignKey('News', on_delete=models.CASCADE,
                                related_name='news', verbose_name="Новость")
 

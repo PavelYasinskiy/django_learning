@@ -1,12 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-# from app_news.forms import UserForm
 from django.views import View
-# from app_news.models import User
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse
-
 from app_news.models import News, Comments
 from app_news.forms import NewsForm, CommentsForm
 
@@ -28,7 +25,7 @@ class NewsFormView(View):
 class CommentsFormView(SingleObjectMixin, FormView):
     template_name = 'app_news/news_detail.html'
     form_class = CommentsForm
-    model = News
+    model = Comments
 
     def post(self, request, *args, **kwargs):
         comments_form = CommentsForm(request.POST)
@@ -58,16 +55,6 @@ class NewsEditFormView(View):
                                                               'new_id': new_id})
 
 
-class NewsView(View):
-
-    def get(self, request, *args, **kwargs):
-        view = NewsDetailView.as_view()
-        return view(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        view = CommentsFormView.as_view()
-        return view(request, *args, **kwargs)
-
 class NewsListView(ListView):
     model = News
     template_name = 'news_list.html'
@@ -84,36 +71,15 @@ class NewsDetailView(DetailView):
         context['form'] = CommentsForm()
         return context
 
+class NewsView(View):
+
+    def get(self, request, *args, **kwargs):
+        view = NewsDetailView.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = CommentsFormView.as_view()
+        return view(request, *args, **kwargs)
 
 
 
-
-# class UserFormView(View):
-#
-#     def get(self, request):
-#         user_form = UserForm()
-#         return render(request, 'profiles/register.html', context={'user_form': user_form})
-#
-#     def post(self, request):
-#         user_form = UserForm(request.POST)
-#         if user_form.is_valid():
-#             User.objects.create(**user_form.cleaned_data)
-#             return HttpResponseRedirect('/profiles/1/edit')
-#         return render(request, 'profiles/register.html', context={'user_form': user_form})
-#
-#
-# class UserEditFormView(View):
-#     def get(self, request, profile_id):
-#         user = User.objects.get(id=profile_id)
-#         user_form = UserForm(instance=user)
-#         return render(request, 'profiles/edit.html', context={'user_form': user_form,
-#                                                               'profile_id': profile_id})
-#
-#     def post(self, request, profile_id):
-#         user = User.objects.get(id=profile_id)
-#         user_form = UserForm(request.POST, instance=user)
-#
-#         if user_form.is_valid():
-#             user.save()
-#         return render(request, 'profiles/edit.html', context={'user_form': user_form,
-#                                                               'profile_id': profile_id})

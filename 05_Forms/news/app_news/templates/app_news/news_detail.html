@@ -8,16 +8,19 @@
     <h1>{{ object.title }}</h1>
         <p>{{ object.description }}</p>
         <p>{{ object.public_date }}</p>
-    {% for comment in object.all.news.all %}
         <p>Кто{{ comment.username }}</p>
-        <p>Что{{ comment.what }}</p>
-    {% endfor %}
+        <p>Что{{ comment.text_comment }}</p>
         <form method="post" action="./">
             {% csrf_token %}
             {{ form.as_ul }}
             <button type="submit">Добавить коммент</button>
         </form>
-    <a href="{% url 'news' %}">НА ГЛАВНУЮ</a>
+   <p>
+       <a href="{% url 'news' %}{{object.id}}/edit/">редактировать новость</a>
+   </p>
+    <p>
+        <a href="{% url 'news' %}">НА ГЛАВНУЮ</a>
+    </p>
 
 </body>
 </html>
