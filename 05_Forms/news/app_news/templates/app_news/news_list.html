@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новости</title>
+<ul>
+    <h1>Новости</h1>
+    {% for news in news_list %}
+    <li>
+        <a href="{% url 'news' news.id %}">{{ news.title }} | {{ news.public_date }}</a>
+    </li>
+    {% endfor %}
+    <a href="{% url 'news'  %}addnews">ДОБАВИТЬ НОВОСТЬ</a>
+</ul>
+</html>
