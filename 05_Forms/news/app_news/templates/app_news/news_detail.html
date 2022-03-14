@@ -8,8 +8,8 @@
     <h1>{{ object.title }}</h1>
         <p>{{ object.description }}</p>
         <p>{{ object.public_date }}</p>
-        <p>Кто{{ comment.username }}</p>
-        <p>Что{{ comment.text_comment }}</p>
+        <p>Кто{{ object.article.set.username }}</p>
+        <p>Что{{ object.article.set.text_comment }}</p>
         <form method="post" action="./">
             {% csrf_token %}
             {{ form.as_ul }}

@@ -7,6 +7,7 @@ from django.urls import reverse
 from app_news.models import News, Comments
 from app_news.forms import NewsForm, CommentsForm
 
+
 class NewsFormView(View):
     def get(self, request):
         news_form = NewsForm()
@@ -14,28 +15,9 @@ class NewsFormView(View):
         return render(request, 'app_news/news_add.html', context={'news_form': news_form})
 
     def post(self, request):
-        news_form = NewsForm(request.POST)
-        if news_form.is_valid():
-            News.objects.create(**news_form.cleaned_data)
-            return HttpResponseRedirect('/news/')
-        return render(request, 'app_news/news_add.html', context={'news_form': news_form})
-
-
-
-class CommentsFormView(SingleObjectMixin, FormView):
-    template_name = 'app_news/news_detail.html'
-    form_class = CommentsForm
-    model = Comments
-
-    def post(self, request, *args, **kwargs):
-        comments_form = CommentsForm(request.POST)
-        if comments_form.is_valid():
-            Comments.objects.create(**comments_form.cleaned_data)
-            return HttpResponseRedirect('./')
-        return render(request, 'app_news/news_detail.html', context={'comments_form': comments_form})
-
-    def get_success_url(self):
-        return reverse('news-detail', kwargs={'pk': self.object.pk})
+        f = NewsForm(request.POST)
+        new_article = f.save()
+        return HttpResponseRedirect('/news/')
 
 
 class NewsEditFormView(View):
@@ -62,7 +44,6 @@ class NewsListView(ListView):
     queryset = News.objects.all().order_by()
 
 
-
 class NewsDetailView(DetailView):
     model = News
 
@@ -71,15 +52,10 @@ class NewsDetailView(DetailView):
         context['form'] = CommentsForm()
         return context
 
-class NewsView(View):
-
-    def get(self, request, *args, **kwargs):
-        view = NewsDetailView.as_view()
-        return view(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        view = CommentsFormView.as_view()
-        return view(request, *args, **kwargs)
-
-
+    def post(self, request, id):
+        form = CommentsForm(request.POST)
+        new_comment = form.save(commit=False)
+        new_comment.article = News.objects.all().order_by()[id]
+        new_comment.save()
+        return HttpResponseRedirect('/news/<int:pk>/')
 
