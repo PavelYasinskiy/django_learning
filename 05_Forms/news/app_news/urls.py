@@ -5,6 +5,6 @@ urlpatterns = [
     path('news/addnews/', NewsFormView.as_view()),
     path('news/<int:pk>/',  NewsDetailView.as_view(), name='news'),
     path('news/', NewsListView.as_view(), name='news'),
-    path('news/<int:new_id>/edit/', NewsEditFormView.as_view()),
+    path('news/<int:pk>/edit/', NewsEditFormView.as_view()),
 ]
 

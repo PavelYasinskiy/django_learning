@@ -21,20 +21,20 @@ class NewsFormView(View):
 
 
 class NewsEditFormView(View):
-    def get(self, request, new_id):
-        news = News.objects.get(id=new_id)
+    def get(self, request, pk):
+        news = News.objects.get(id=pk)
         news_form = NewsForm(instance=news)
         return render(request, 'app_news/edit.html', context={'news_form': news_form,
-                                                              'new_id': new_id})
+                                                              'new_id': pk})
 
-    def post(self, request, new_id):
-        news = News.objects.get(id=new_id)
+    def post(self, request, pk):
+        news = News.objects.get(id=pk)
         news_form = NewsForm(request.POST, instance=news)
 
         if news_form.is_valid():
             news.save()
         return render(request, 'app_news/edit.html', context={'news_form': news_form,
-                                                              'new_id': new_id})
+                                                              'new_id': pk})
 
 
 class NewsListView(ListView):
@@ -52,10 +52,11 @@ class NewsDetailView(DetailView):
         context['form'] = CommentsForm()
         return context
 
-    def post(self, request, id):
+    def post(self, request, pk):
+        print("Что тут происходит", request.POST, "а вот что")
         form = CommentsForm(request.POST)
         new_comment = form.save(commit=False)
-        new_comment.article = News.objects.all().order_by()[id]
+        new_comment.article = self.get_object()
         new_comment.save()
-        return HttpResponseRedirect('/news/<int:pk>/')
+        return HttpResponseRedirect(f'/news/{pk}/')
 
