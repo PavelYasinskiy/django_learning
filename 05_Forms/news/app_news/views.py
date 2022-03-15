@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView
-from django.views.generic.detail import SingleObjectMixin
-from django.urls import reverse
+from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse, reverse_lazy
 from app_news.models import News, Comments
 from app_news.forms import NewsForm, CommentsForm
 
@@ -20,21 +20,38 @@ class NewsFormView(View):
         return HttpResponseRedirect('/news/')
 
 
-class NewsEditFormView(View):
-    def get(self, request, new_id):
-        news = News.objects.get(id=new_id)
-        news_form = NewsForm(instance=news)
-        return render(request, 'app_news/edit.html', context={'news_form': news_form,
-                                                              'new_id': new_id})
+class NewsCreateView(CreateView):
+    model = News
+    fields = '__all__'
+    template_name = 'app_news/news_add.html'
 
-    def post(self, request, new_id):
-        news = News.objects.get(id=new_id)
-        news_form = NewsForm(request.POST, instance=news)
+    def get_success_url(self):
+        return reverse_lazy('add')
 
-        if news_form.is_valid():
-            news.save()
-        return render(request, 'app_news/edit.html', context={'news_form': news_form,
-                                                              'new_id': new_id})
+
+class NewsUpdateView(UpdateView):
+    model = News
+    fields = '__all__'
+    template_name_suffix = '_edit'
+
+    def get_success_url(self):
+        return reverse('news')
+
+# class NewsEditFormView(View):
+#     def get(self, request, pk):
+#         news = News.objects.get(id=pk)
+#         news_form = NewsForm(instance=news)
+#         return render(request, 'app_news/edit.html', context={'news_form': news_form,
+#                                                               'new_id': pk})
+#
+#     def post(self, request, pk):
+#         news = News.objects.get(id=pk)
+#         news_form = NewsForm(request.POST, instance=news)
+#
+#         if news_form.is_valid():
+#             news.save()
+#         return render(request, 'app_news/edit.html', context={'news_form': news_form,
+#                                                               'new_id': pk})
 
 
 class NewsListView(ListView):
@@ -52,10 +69,10 @@ class NewsDetailView(DetailView):
         context['form'] = CommentsForm()
         return context
 
-    def post(self, request, id):
+    def post(self, request, pk):
         form = CommentsForm(request.POST)
         new_comment = form.save(commit=False)
-        new_comment.article = News.objects.all().order_by()[id]
+        new_comment.article = self.get_object()
         new_comment.save()
-        return HttpResponseRedirect('/news/<int:pk>/')
+        return HttpResponseRedirect(reverse('news-detail', args=[f'{pk}']))
 

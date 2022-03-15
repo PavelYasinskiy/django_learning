@@ -6,10 +6,10 @@
 </head>
 <body>
     <h2>Редактирование</h2>
-    <form method="post", action="/news/{{ new_id }}/edit/">
+    <form method="post", action="./">
         {% csrf_token %}
-        {{ news_form.as_p }}
-        <button type="submit">Сохранить</button>
+        {{ form.as_p }}
+        <button type="submit" value="Update">Сохранить</button>
     </form>
 
 </body>
