@@ -6,10 +6,10 @@
 </head>
 <body>
   <h2>Добавить новость</h2>
-  <form method="post" action="/news/addnews/">
+  <form method="post" >
     {% csrf_token %}
-    {{ news_form.as_ul }}
-    <button type="submit">Проинформировать</button>
+    {{ form.as_ul }}
+    <button type="submit" value="Save">Проинформировать</button>
   </form>
   <p></p>
   <a href="{% url 'news' %}">НА ГЛАВНУЮ</a>
