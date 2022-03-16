@@ -25,12 +25,12 @@ class Comments(models.Model):
         ('d', 'Удалено администратором')
     ]
     username = models.CharField(max_length=25, verbose_name="Имя")
-    text_comment = models.CharField(max_length=1500, verbose_name="Ваш комментарий", choices=STATUS_CHOICES)
+    text_comment = models.CharField(max_length=1500, verbose_name="Ваш комментарий")
     article = models.ForeignKey('News', related_name="comments",
                                 on_delete=models.CASCADE, verbose_name="Новость")
 
-    def __str__(self):
-        return f'{self.username}, {self.text_comment[:15]}...'
-
+    # def __str__(self):
+    #     return f'{self.username}, {self.text_comment[:15]}...'
+    #
 
 
