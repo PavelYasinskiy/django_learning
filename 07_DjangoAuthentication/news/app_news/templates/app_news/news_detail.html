@@ -16,8 +16,8 @@
         <p>{{ object.public_date }}</p>
         <h2>Комментарии</h2>
         {% for comments in object.comments.all %}
-        {% if comments.username.is_authenticated %}
-        <p>{{ comments.username }}: {{ comments.text_comment }}</p>
+        {% if comments.user %}
+        <p>{{ comments.user.username }}: {{ comments.text_comment }}</p>
         {% else %}
          <p>{{ comments.username }} (Аноним): {{ comments.text_comment }}</p>
         {% endif %}

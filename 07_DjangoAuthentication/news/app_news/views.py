@@ -75,7 +75,8 @@ class NewsDetailView(DetailView, User):
         form = CommentsForm(request.POST)
         new_comment = form.save(commit=False)
         new_comment.article = self.get_object()
-        new_comment.username = request.user
+        if request.user.is_authenticated:
+            new_comment.user = request.user
         new_comment.save()
         return HttpResponseRedirect(reverse('news-detail', args=[f'{pk}']))
 

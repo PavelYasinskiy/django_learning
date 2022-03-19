@@ -25,7 +25,8 @@ class Comments(models.Model):
     STATUS_CHOICES = [
         ('d', 'Удалено администратором')
     ]
-    username = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Имя", related_name='auth_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,  related_name='auth_user', null=True, blank=True)
+    username = models.CharField(max_length=25,  null=True, blank=True)
     text_comment = models.CharField(max_length=1500, verbose_name="Ваш комментарий")
     article = models.ForeignKey('News', related_name="comments",
                                 on_delete=models.CASCADE, verbose_name="Новость")
