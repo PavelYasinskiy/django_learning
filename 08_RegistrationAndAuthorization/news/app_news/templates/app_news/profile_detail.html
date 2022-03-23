@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Профиль</title>
+</head>
+<body>
+{% if request.user.is_authenticated %}
+    <h2>{{ request.user.username }}</h2>
+    <a href="{% url 'logout' %}">Выйти из аккаунта</a>
+    <p>Имя пользователя: {{ request.user.username }}</p>
+    <p>Имя: {{ request.user.first_name }}</p>
+    <p>Номер телефона: {{ request.user.profile.phone_number }}</p>
+    <p>Город: {{ request.user.profile.city }}</p>
+    <p>Верификация: {{ request.user.profile.verification_flag }}</p>
+    <p>Опубликовано новостей: {{ request.user.profile.news_count }}</p>
+    <a href="{% url 'logout' %}">Выйти из аккаунта</a>
+{% else %}
+    <a href="{% url 'login' %}">Войти в свой аккаунт</a>
+{% endif %}
+    <a href="{% url 'news' %}">НА ГЛАВНУЮ</a>
+
+
+</body>
+</html>
