@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app_news.models import Comments, News, Tag
+from app_news.models import Comments, News, Tag, Profile
 
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name']
@@ -46,9 +46,28 @@ class NewsAdmin(admin.ModelAdmin):
     activate.short_description = "Перевести в статус Активно"
     deactivate.short_description = "Перевести в статус Неактивно"
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'phone_number', 'city', 'verification_flag']
+    list_filter = ['verification_flag']
+    list_editable = ['verification_flag']
+
+    actions = ['verify', 'deverify']
+
+
+
+    def verify(self, request, queryset):
+        queryset.update(verification_flag=True)
+
+    def deverify(self, request, queryset):
+        queryset.update(verification_flag=False)
+
+    verify.short_description = "Перевести в статус Верифицирован"
+    deverify.short_description = "Перевести в статус Неверифицирован"
+
 
 admin.site.register(News, NewsAdmin)
 admin.site.register(Comments, CommentsAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(Profile, ProfileAdmin)
 
 

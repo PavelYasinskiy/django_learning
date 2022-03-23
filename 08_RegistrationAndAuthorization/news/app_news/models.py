@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+
 
 
 class News(models.Model):
@@ -13,6 +14,7 @@ class News(models.Model):
     edit_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     active_flag = models.BooleanField(verbose_name='Активность', choices=STATUS_CHOICES, default=False)
     tag = models.ManyToManyField('Tag', verbose_name='Тэги', related_name='tag', null=True, blank=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE,  related_name='author', null=True, blank=True)
 
     def __str__(self):
         return f'{self.title}, {self.public_date}, {self.active_flag}'
@@ -50,11 +52,21 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=15, verbose_name='Номер телефона')
     city = models.CharField(max_length=35, verbose_name='Город')
     verification_flag = models.BooleanField(verbose_name='Верификация', choices=STATUS_CHOICES, default=False)
-    news_count = models.IntegerField(verbose_name='Количество опубликованный новостей',
-                                     default=0)
+
 
     class Meta:
         permissions = (
             ('can_give_add_news', "Может давать права на добавление новостей"),
         )
 
+    @property
+    def news_count(self):
+        return News.objects.filter(author=self.user, active_flag=True).all().count()
+
+    def verify(self):
+        verify_group = Group.objects.get(name='Верифицированный')
+        deverify_group = Group.objects.get(name='Обычный')
+        if self.verification_flag is True and self.groups.filter(id=verify_group.id).exists():
+            self.user.groups.add(verify_group)
+        else:
+            self.user.groups.add(deverify_group)

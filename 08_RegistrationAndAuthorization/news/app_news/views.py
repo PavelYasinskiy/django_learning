@@ -26,11 +26,19 @@ class NewsFormView(View):
 class NewsCreateView(PermissionRequiredMixin, CreateView):
     permission_required = 'app_news.add_news'
     model = News
-    fields = '__all__'
+    fields = ['title', 'description', 'tag']
     template_name = 'app_news/news_add.html'
 
     def get_success_url(self):
         return reverse_lazy('add')
+
+    def post(self, request):
+        form = NewsForm(request.POST)
+        new_news = form.save(commit=False)
+        if request.user.is_authenticated:
+            new_news.author = request.user
+        new_news.save()
+        return HttpResponseRedirect(reverse('add'))
 
 
 class NewsUpdateView(PermissionRequiredMixin, UpdateView):
@@ -80,7 +88,6 @@ class NewsDetailView(DetailView, User):
         new_comment.article = self.get_object()
         if request.user.is_authenticated:
             new_comment.user = request.user
-            request.user.news_count += 1
         new_comment.save()
 
         return HttpResponseRedirect(reverse('news-detail', args=[f'{pk}']))
