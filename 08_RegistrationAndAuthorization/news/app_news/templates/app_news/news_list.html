@@ -17,11 +17,20 @@
 <ul>
 
     <h1>Новости</h1>
+    {% if perms.app_news.change_news %}
     {% for news in news_list %}
     <li>
         <a href="{% url 'news'  %}{{ news.pk }} ">{{ news.title }} |{{ news.public_date }}</a>
     </li>
     {% endfor %}
-
+    {% else %}
+    {% for news in news_list %}
+    {% if news.active_flag %}
+    <li>
+        <a href="{% url 'news'  %}{{ news.pk }} ">{{ news.title }} |{{ news.public_date }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
 </ul>
 </html>

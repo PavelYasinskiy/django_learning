@@ -10,7 +10,7 @@ class NewsForm(forms.ModelForm):
 
     class Meta:
         model = News
-        exclude = ['active_flag', 'author']
+        exclude = ['author']
 
 
 class CommentsForm(forms.ModelForm):

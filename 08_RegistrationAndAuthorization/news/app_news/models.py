@@ -63,10 +63,10 @@ class Profile(models.Model):
     def news_count(self):
         return News.objects.filter(author=self.user, active_flag=True).all().count()
 
-    def verify(self):
-        verify_group = Group.objects.get(name='Верифицированный')
-        deverify_group = Group.objects.get(name='Обычный')
-        if self.verification_flag is True and self.groups.filter(id=verify_group.id).exists():
-            self.user.groups.add(verify_group)
-        else:
-            self.user.groups.add(deverify_group)
+    # def verify(self):
+    #     verify_group = Group.objects.get(name='Верифицированный')
+    #     deverify_group = Group.objects.get(name='Обычный')
+    #     if self.verification_flag is True and self.groups.filter(id=verify_group.id).exists():
+    #         self.user.groups.add(verify_group)
+    #     else:
+    #         self.user.groups.add(deverify_group)

@@ -14,7 +14,6 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 class NewsFormView(View):
     def get(self, request):
         news_form = NewsForm()
-
         return render(request, 'app_news/news_add.html', context={'news_form': news_form})
 
     def post(self, request):
@@ -26,7 +25,7 @@ class NewsFormView(View):
 class NewsCreateView(PermissionRequiredMixin, CreateView):
     permission_required = 'app_news.add_news'
     model = News
-    fields = ['title', 'description', 'tag']
+    fields = ['title', 'description', 'tag', 'active_flag']
     template_name = 'app_news/news_add.html'
 
     def get_success_url(self):
@@ -37,18 +36,40 @@ class NewsCreateView(PermissionRequiredMixin, CreateView):
         new_news = form.save(commit=False)
         if request.user.is_authenticated:
             new_news.author = request.user
-        new_news.save()
+        if request.user.has_perm('app.news.can_publish'):
+            new_news.save()
+        else:
+            new_news.active_flag = False
+            new_news.save()
         return HttpResponseRedirect(reverse('add'))
 
+    # from = CommentsForm(request.POST)
+    # new_comment = form.save(commit=False)
+    # new_comment.article = self.get_object()
+    # if request.user.is_authenticated:
+    #     new_comment.user = request.user
+    # new_comment.save()
 
-class NewsUpdateView(PermissionRequiredMixin, UpdateView):
+
+class NewsModeratorUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = 'app_news.change_news'
     model = News
-    exclude = ["active_flag"]
+    fields = ['title', 'description', 'tag', 'active_flag']
     template_name_suffix = '_edit'
 
     def get_success_url(self):
         return reverse('news')
+
+class NewsUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'app_news.change_news'
+    model = News
+    fields = ['title', 'description', 'tag']
+    template_name_suffix = '_edit'
+
+    def get_success_url(self):
+        return reverse('news')
+
+
 
 # class NewsEditFormView(View):
 #     def get(self, request, pk):
@@ -71,7 +92,7 @@ class NewsListView(ListView):
     model = News
     template_name = 'news_list.html'
     context_object_name = "news_list"
-    queryset = News.objects.filter(active_flag=True).all().order_by()
+
 
 
 class NewsDetailView(DetailView, User):
@@ -123,3 +144,9 @@ def register_view(request):
 
 def profile_detail_view(request):
     return render(request, 'app_news/profile_detail.html')
+
+def change_tags(request):
+    if request.user.has_perm('tags.add_tag'):
+        ...
+    if request.user.has_perms(['tags.add_tag', 'tags.change_tag']):
+        ...

@@ -10,8 +10,11 @@
     <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
 
     <p><a href="{% url 'profile_page' %}">Профиль</a></p>
-
+    {% if perms.app_news.can_publish %}
+    <p><a href="{% url 'news' %}editmod/{{object.id}}/">редактировать новость</a></p>
+    {% else %}
     <p><a href="{% url 'news' %}edit/{{object.id}}/">редактировать новость</a></p>
+    {% endif %}
 {% else %}
     <a href="{% url 'login' %}">Войти в свой аккаунт</a>
     <a href="{% url 'register' %}">Создать аккаунт</a>

@@ -54,7 +54,6 @@ class ProfileAdmin(admin.ModelAdmin):
     actions = ['verify', 'deverify']
 
 
-
     def verify(self, request, queryset):
         queryset.update(verification_flag=True)
 
