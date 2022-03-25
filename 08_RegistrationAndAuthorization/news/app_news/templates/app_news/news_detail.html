@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.title }}</title>
+</head>
+<body>
+{% if request.user.is_authenticated %}
+    <h2>{{ request.user.username }}</h2>
+    <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
+
+    <p><a href="{% url 'profile_page' %}">Профиль</a></p>
+    {% if perms.app_news.can_publish %}
+    <p><a href="{% url 'news' %}editmod/{{object.id}}/">редактировать новость</a></p>
+    {% else %}
+    <p><a href="{% url 'news' %}edit/{{object.id}}/">редактировать новость</a></p>
+    {% endif %}
+{% else %}
+    <a href="{% url 'login' %}">Войти в свой аккаунт</a>
+    <a href="{% url 'register' %}">Создать аккаунт</a>
+{% endif %}
+    <h1>{{ object.title }}</h1>
+        <p>{{ object.description }}</p>
+        <p>{{ object.public_date }}</p>
+        <p>{{ object.tag }}</p>
+        <h2>Комментарии</h2>
+        {% for comments in object.comments.all %}
+        {% if comments.user %}
+        <p>{{ comments.user.username }}: {{ comments.text_comment }}</p>
+        {% else %}
+         <p>{{ comments.username }} (Аноним): {{ comments.text_comment }}</p>
+        {% endif %}
+         <p></p>
+        {% endfor %}
+{% if request.user.is_authenticated %}
+        <form method="post" action="./">
+            {% csrf_token %}
+            {{ form.text_comment }}
+            <button type="submit">Добавить коммент</button>
+        </form>
+{% else %}
+        <form method="post" action="./">
+            {% csrf_token %}
+            {{ form.as_ul }}
+            <button type="submit">Добавить коммент</button>
+        </form>
+{% endif %}
+
+    <p>
+        <a href="{% url 'news' %}">НА ГЛАВНУЮ</a>
+    </p>
+
+</body>
+</html>

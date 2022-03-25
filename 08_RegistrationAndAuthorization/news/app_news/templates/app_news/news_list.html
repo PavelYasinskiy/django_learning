@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новости</title>
+{% if request.user.is_authenticated %}
+    <h2>{{ request.user.username }}</h2>
+    <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
+
+    <p><a href="{% url 'profile_page' %}">Профиль</a></p>
+
+    <p><a href="{% url 'news'  %}addnews">ДОБАВИТЬ НОВОСТЬ</a></p>
+{% else %}
+    <a href="{% url 'login' %}">Войти в свой аккаунт</a>
+    <a href="{% url 'register' %}">Создать аккаунт</a>
+{% endif %}
+<ul>
+
+    <h1>Новости</h1>
+    {% if perms.app_news.change_news %}
+    {% for news in news_list %}
+    <li>
+        <a href="{% url 'news'  %}{{ news.pk }} ">{{ news.title }} |{{ news.public_date }}</a>
+    </li>
+    {% endfor %}
+    {% else %}
+    {% for news in news_list %}
+    {% if news.active_flag %}
+    <li>
+        <a href="{% url 'news'  %}{{ news.pk }} ">{{ news.title }} |{{ news.public_date }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</ul>
+</html>
