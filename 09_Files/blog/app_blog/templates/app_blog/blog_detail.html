@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.title }}</title>
+</head>
+<body>
+{% if request.user.is_authenticated %}
+    <h2>{{ request.user.username }}</h2>
+    <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
+
+    <p><a href="{% url 'profile_page' %}">Профиль</a></p>
+{% else %}
+    <a href="{% url 'login' %}">Войти в свой аккаунт</a>
+    <a href="{% url 'register' %}">Создать аккаунт</a>
+{% endif %}
+    <h1>{{ object.title }}</h1>
+        <p>{{ object.blog_text }}</p>
+        {% if form %}
+        {% for image in form %}
+        <img src="{{ image.blog_photo.url }}" height="160" align="bottom" />
+        {% endfor %}
+        {% endif %}
+        <p>{{ object.public_date }}</p>
+
+
+    <p>
+        <a href="{% url 'blog' %}">НА ГЛАВНУЮ</a>
+    </p>
+
+</body>
+</html>

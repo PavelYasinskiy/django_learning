@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Профиль</title>
+</head>
+<body>
+{% if request.user.is_authenticated %}
+    <h2>{{ request.user.username }}</h2>
+    <a href="{% url 'logout' %}">Выйти из аккаунта</a>
+    <p>Имя пользователя: {{ request.user.username }}</p>
+    <p>Имя: {{ request.user.first_name }}</p>
+    <p>Фамилия: {{ request.user.profile.second_name }}</p>
+    {% if request.user.profile.avatar %}
+        <p>Аватар:</p>
+        <p><img src="{{ request.user.profile.avatar.url }}" height="160" align="bottom" /></p>
+    {% endif %}
+    <a href="{% url 'update_blog' %}">Загрузить записи в блог</a>
+    <a href="{% url 'add' %}">Добавить записи в блог</a>
+    <a href="{% url 'logout' %}">Выйти из аккаунта</a>
+{% else %}
+    <a href="{% url 'login' %}">Войти в свой аккаунт</a>
+{% endif %}
+    <a href="{% url 'blog' %}">НА ГЛАВНУЮ</a>
+    <a href="{% url 'profile_edit' %}">Изменить профиль</a>
+
+
+</body>
+</html>

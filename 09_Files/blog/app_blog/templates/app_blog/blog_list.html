@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новости</title>
+{% if request.user.is_authenticated %}
+    <h2>{{ request.user.username }}</h2>
+    <p><a href="{% url 'logout' %}">Выйти из аккаунта</a></p>
+
+    <p><a href="{% url 'profile_page' %}">Профиль</a></p>
+
+    <p><a href="{% url 'blog'  %}addblog">ДОБАВИТЬ ЗАПИСЬ В БЛОГ</a></p>
+{% else %}
+    <a href="{% url 'login' %}">Войти в свой аккаунт</a>
+    <a href="{% url 'register' %}">Создать аккаунт</a>
+{% endif %}
+<ul>
+
+    <h1>Блоги</h1>
+    {% if blog_list %}
+    {% for blog in blog_list %}
+    <li>
+        <a href="{% url 'blog'  %}{{ blog.pk }} ">{{ blog.author }} | {{ blog.blog_text|truncatechars:100 }}</a>
+    </li>
+    {% endfor %}
+    {% endif %}
+
+</ul>
+</html>
