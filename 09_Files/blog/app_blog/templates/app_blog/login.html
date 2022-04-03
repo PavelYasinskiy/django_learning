@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <h1>Войти под своей учетной записью</h1>
+    <form method="post" action="./" >
+      {% csrf_token %}
+      {{ form.as_ul }}
+      <button type="submit">Залогиниться</button>
+    </form>
+    <p><a href="{% url 'register' %}">Создать аккаунт</a></p>
+    <p></p>
+</head>
+<body>
+
+</body>
+</html>
